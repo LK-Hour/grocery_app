@@ -29,10 +29,21 @@ class _GroceryListState extends State<GroceryList> {
 
     if (dummyGroceryItems.isNotEmpty) {
       // TODO-1 - Display groceries with an Item builder and  LIst Tile
-      content = ListView.builder(
+      content = ReorderableListView.builder(
+        onReorder: (oldIndex, newIndex) {
+          setState(() {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            final item = dummyGroceryItems.removeAt(oldIndex);
+            dummyGroceryItems.insert(newIndex, item);
+          });
+        },
         itemCount: dummyGroceryItems.length,
-        itemBuilder: (ctx, index) =>
-            GroceryTile(grocery: dummyGroceryItems[index]),
+        itemBuilder: (ctx, index) => GroceryTile(
+          key: ValueKey(dummyGroceryItems[index].id),
+          grocery: dummyGroceryItems[index],
+        ),
       );
     }
 
@@ -55,9 +66,12 @@ class GroceryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO-2 - Display groceries with an Item builder and  LIst Tile
     return ListTile(
+      key: ValueKey(grocery.id),
       leading: Container(color: grocery.category.color, width: 15, height: 15),
       title: Text(grocery.name),
-      subtitle: Text(grocery.category.name),
+      subtitle: Text(
+        '${grocery.category.label} - Quantity: ${grocery.quantity}',
+      ),
     );
   }
 }

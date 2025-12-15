@@ -1,5 +1,4 @@
 import 'dart:ui';
- 
 
 class Grocery {
   const Grocery({
@@ -14,7 +13,6 @@ class Grocery {
   final int quantity;
   final GroceryCategory category;
 }
-
 
 enum GroceryCategory {
   vegetables('Vegetables', Color.fromARGB(255, 0, 255, 128)),
